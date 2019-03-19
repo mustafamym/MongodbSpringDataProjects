@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.5.xsd">
+    <context:annotation-config />
+  
+    <!-- Connection to MongoDB server -->
+    <mongo:mongo id="mongo" host="localhost" />
+    <mongo:db-factory id="mongoDbFactory" host="localhost" port="27017" dbname="gridFSdemo" />
+    <mongo:mapping-converter id="converter" db-factory-ref="mongoDbFactory" />
+    
+
+    <!-- Define MongoDB GridFS Template -->
+    <bean id="gridTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+        <constructor-arg ref="mongoDbFactory" />
+        <constructor-arg ref="converter" />
+    </bean>
+    
+    <bean id="gridFSDBFileDao" class="com.mongo.gridfs.dao.GridFSDBFileDaoImpl"></bean>
+</beans>
